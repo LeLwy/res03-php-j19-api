@@ -17,9 +17,10 @@ class UserController extends AbstractController {
         // render
     }
 
-    public function getUser(array $get)
+    public function getUser(string $get)
     {
-        $user = $this->um->getUserById();
+        $id = intval($get['id']);
+        $user = $this->um->getUserById($id);
         // get the user from the manager
         // either by email or by id
         
@@ -29,7 +30,8 @@ class UserController extends AbstractController {
 
     public function createUser(array $post)
     {
-        $createdUser = $this->um->createUser();
+        $newUser = new User($post['username'], $post['first_name'], $post['last_name'], $post['email']);
+        $createdUser = $this->um->createUser($newUser);
         // create the user in the manager
 
         $this->render(['createdUser' =>$createdUser]);
@@ -38,7 +40,8 @@ class UserController extends AbstractController {
 
     public function updateUser(array $post)
     {
-        $updatedUser = $this->um->updateUser();
+        $userToUpdate = new User($post['username'], $post['first_name'], $post['last_name'], $post['email']);
+        $updatedUser = $this->um->updateUser($userToUpdate);
         // update the user in the manager
 
         $this->render(['updatedUser' =>$updatedUser]);
@@ -47,7 +50,8 @@ class UserController extends AbstractController {
 
     public function deleteUser(array $post)
     {
-        $deletedUser = $this->um->deleteUser();
+        $userToDelete = new User($post['username'], $post['first_name'], $post['last_name'], $post['email']);
+        $deletedUser = $this->um->deleteUser($userToDelete);
         // delete the user in the manager
 
         $this->render($deletedUser);
