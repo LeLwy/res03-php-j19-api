@@ -30,7 +30,7 @@ class UserController extends AbstractController {
 
     public function createUser(array $post)
     {
-        $newUser = new User($post['username'], $post['first_name'], $post['last_name'], $post['email']);
+        $newUser = new User(null, $post['username'], $post['first_name'], $post['last_name'], $post['email']);
         $createdUser = $this->um->createUser($newUser);
         // create the user in the manager
 

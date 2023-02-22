@@ -48,7 +48,7 @@ class UserManager extends AbstractManager {
         // create the user from the database
         
         $newUser = $query->fetch(PDO::FETCH_ASSOC);
-        return $newUser;
+        return getUserById($id);
         // return it with its id
     }
 
