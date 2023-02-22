@@ -4,7 +4,7 @@ class UserManager extends AbstractManager {
 
     public function getAllUsers() : array
     {
-        $query = $db->prepare('SELECT * FROM users');
+        $query = $this->db->prepare('SELECT * FROM users');
         $query->execute();
         $users = $query->fetchAll(PDO::FETCH_ASSOC);
         
@@ -14,7 +14,7 @@ class UserManager extends AbstractManager {
 
     public function getUserById(int $id) : User
     {
-        $query = $db->prepare('SELECT * FROM users WHERE id = :id');
+        $query = $this->db->prepare('SELECT * FROM users WHERE id = :id');
         
         $parameters = [
         'id' => $id
@@ -24,14 +24,14 @@ class UserManager extends AbstractManager {
         
         $user = $query->fetch(PDO::FETCH_ASSOC);
         
-        $newUser = new User($user['username'], $user['first_name'], $user['last_name'], $user['email']);
-        $newUser->setId($user['id']);
-        // get the user with $id from the database
+        $newUser = new User($user['id'], $user['username'], $user['first_name'], $user['last_name'], $user['email']);
+        
+        return $newUser;
     }
 
     public function createUser(User $user) : User
     {
-        $query = $db->prepare('INSERT INTO users VALUES(:id, :username, :first_name, :last_name, :email)');
+        $query = $this->db->prepare('INSERT INTO users VALUES(:id, :username, :first_name, :last_name, :email)');
         
         $parameters = [
         'id' => null,
@@ -54,7 +54,7 @@ class UserManager extends AbstractManager {
 
     public function updateUser(User $user) : User
     {
-        $query = $db->prepare('UPDATE users SET username = :newUsername, first_name = :newFirst_name, last_name = :newLast_name, email = :newEmail WHERE id = :id');
+        $query = $this->db->prepare('UPDATE users SET username = :newUsername, first_name = :newFirst_name, last_name = :newLast_name, email = :newEmail WHERE id = :id');
         
         $parameters = [
         'id' => $user->getId(),
@@ -74,7 +74,7 @@ class UserManager extends AbstractManager {
 
     public function deleteUser(User $user) : array
     {
-        $query = $db->prepare('DELETE from users WHERE id = :id');
+        $query = $this->db->prepare('DELETE from users WHERE id = :id');
         
         $parameters = [
         'id' => $user->getId()

@@ -19,7 +19,7 @@ class UserController extends AbstractController {
 
     public function getUser(string $get)
     {
-        $id = intval($get['id']);
+        $id = intval($get);
         $user = $this->um->getUserById($id);
         // get the user from the manager
         // either by email or by id
